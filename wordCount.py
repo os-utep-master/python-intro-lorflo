@@ -21,13 +21,14 @@ if file.mode == 'r':
     contents = file.read()
 file.close()
 
-file_as_list = re.split('[ ?,.!:;"\n-]',contents)
+file_as_list = re.split('[ -?,.!:;"\n\']',contents)
 words = [word.strip() for word in file_as_list]
-words.sort(key = lambda x: x.lower())
+lowWords = [lw.casefold() for lw in words]
+lowWords.sort()
 output = {}
 
-for w in words:
-    num =  words.count(w)
+for w in lowWords:
+    num =  lowWords.count(w)
     output[w] = num
 
 del output['']
