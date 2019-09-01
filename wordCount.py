@@ -3,9 +3,11 @@ import re         # regular expression tools
 import os         # checking if file exists
 
 # set input and output files
-
-Fname = "speech.txt"
-#OutputFname = sys.argv[2]
+if len(sys.argv) is not 3:
+    print("Correct usage: wordCount.py <input text file> <output file>")
+    exit()
+Fname = sys.argv[1]
+OutputFname = sys.argv[2]
 
 #make sure text files exist
 if not os.path.exists(Fname):
@@ -13,7 +15,7 @@ if not os.path.exists(Fname):
     exit()
 
 file = open(Fname,"r")
-outfile = open("output.txt", "w+")
+outfile = open(OutputFname, "w+")
 
 if file.mode == 'r':
     contents = file.read()
@@ -27,6 +29,8 @@ output = {}
 for w in words:
     num =  words.count(w)
     output[w] = num
+
+del output['']
 
 for w,n in output.items():
     outfile.write(w + " ")
