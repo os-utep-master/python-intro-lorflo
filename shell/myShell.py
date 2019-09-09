@@ -10,14 +10,14 @@ def exe(prog):
             os.execve(program, [prog], os.environ) # try to exec program
         except FileNotFoundError:             # ...expected
             pass
-    os.write(1,(inp + ":command not found\n").encode())
+    os.write(1,(prog + ":command not found\n").encode())
     sys.exit()
 
 while (1):
     inp = input(os.getcwd() + "$ ")
     args = re.split('[ ]',inp)
     #print(args)
-    
+
     if args[0] == "exit":
         sys.exit(0)
     if args[0] == "cd" and len(args) >= 2:
@@ -38,7 +38,9 @@ while (1):
                     os.set_inheritable(fd, True)
                     exe(args[0])
                     os.close(fd)
-        exe(args[0])
+                if args[1] == "|":
+                    pass
+            exe(args[0])
             
 
     elif child_pid < 0:
