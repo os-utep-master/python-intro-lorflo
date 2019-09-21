@@ -14,7 +14,8 @@ def exe(prog):
     sys.exit()
 
 while (1):
-    inp = input(os.getcwd() + "$ ")
+    #ps = os.environ['PS1']
+    inp = input( os.getcwd() + "$ ")
     args = re.split('[ ]',inp)
     #print(args)
 
@@ -29,18 +30,24 @@ while (1):
     
     child_pid = os.fork()  
     if child_pid == 0:
-        if args[0] == "ls":
-            if len(args) >= 2:
-                if args[1] == ">":
-                    os.close(1)
-                    fd = os.open( args[2], os.O_RDWR|os.O_CREAT )
-                    sys.stdout = fd
-                    os.set_inheritable(fd, True)
-                    exe(args[0])
-                    os.close(fd)
-                if args[1] == "|":
-                    pass
-            exe(args[0])
+         if len(args) >= 2:
+            if args[1] == ">":
+                os.close(1)
+                fd = open( args[2],"w+")
+                sys.stdout = fd
+                os.set_inheritable(1, True)
+                exe(args[0])
+                os.close(fd)
+            if args[1] == "<":
+                os.close(0)
+                fd = open( args[2],"w+")
+                sys.stdout = fd
+                os.set_inheritable(0, True)
+                exe(args[0])
+                os.close(fd)
+            if args[1] == "|":
+                pass
+         exe(args[0])
             
 
     elif child_pid < 0:

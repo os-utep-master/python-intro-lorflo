@@ -1,4 +1,0 @@
-files.txt
-myShell.py
-ReadMe.md
-sort
